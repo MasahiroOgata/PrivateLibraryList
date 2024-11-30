@@ -1,17 +1,17 @@
 /login ログイン画面
 
-/book/list			蔵書一覧画面
-/book/add 			書籍新規登録画面
-/book/detail/書籍ID 		書籍詳細画面
-/book/dispose/書籍ID 		書籍処分画面
-/book/edit/書籍ID 		書籍情報修正画面
-/book/finish/書籍ID 		読了・未読切り替え
+/book/list			            蔵書一覧画面
+/book/add 			            書籍新規登録画面
+/book/detail/書籍ID 		    書籍詳細画面
+/book/dispose/書籍ID 		    書籍処分画面
+/book/edit/書籍ID 		      書籍情報修正画面
+/book/finish/書籍ID 		    読了・未読切り替え
 
-/series/list			シリーズ一覧画面
-/series/detail/シリーズID	シリーズ詳細画面
-/series/add/シリーズID		シリーズ書籍新規追加画面
-/series/create			新シリーズ登録画面
+/series/list			          シリーズ一覧画面
+/series/detail/シリーズID	  シリーズ詳細画面
+/series/add/シリーズID		    シリーズ書籍新規追加画面
+/series/create			        新シリーズ登録画面
 
-/publisher/list			出版社一覧画面
-/publisher/detail/出版社ID	出版社詳細画面
-/publisher/create		出版社新規登録画面
+/publisher/list			        出版社一覧画面
+/publisher/detail/出版社ID	  出版社詳細画面
+/publisher/create		        出版社新規登録画面
