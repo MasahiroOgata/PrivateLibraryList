@@ -10,7 +10,7 @@ values
 "testUser01");
 
 /* テスト用ユーザーデータ2
-   id = 1
+   id = 2
    ユーザー名 = "test02"
    パスワード = "testpass02" */
 insert into users 
