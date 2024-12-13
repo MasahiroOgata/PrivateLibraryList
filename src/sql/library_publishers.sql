@@ -1,8 +1,0 @@
-CREATE TABLE library.publishers (
-    id INT AUTO_INCREMENT NOT NULL,
-    user_id INT NOT NULL,
-    publisher_name VARCHAR(50),
-    create_date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-)
