@@ -19,7 +19,7 @@ public interface SeriesMapper {
 	public MSeries findOneSeries(int id, int userId);
 	
 	/** シリーズ名検索（重複確認） */
-	public String findBySeriesName(String seriesName, int userId);
+	public Integer findBySeriesName(String seriesName, int userId);
 	
 	/** シリーズ1件登録 */
 	public int insertOneSeries(MSeries series);

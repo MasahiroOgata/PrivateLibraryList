@@ -23,7 +23,6 @@ public class NoExistingPublisherValidator implements ConstraintValidator<NoExist
 		if (Objects.isNull(publisherId)) {
 			return true;
 		}
-		
 		return false;
 	}
 

@@ -16,7 +16,7 @@ public interface SeriesService {
 	public MSeries getOneSeries(int id);
 	
 	/** シリーズ名検索（重複確認） */
-	public String checkSeriesName(String seriesName);
+	public Integer checkSeriesName(String seriesName);
 	
 	/** シリーズ1件登録 */
 	public void addOneSeries(MSeries series);

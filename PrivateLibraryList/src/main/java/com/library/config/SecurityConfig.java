@@ -44,34 +44,10 @@ public class SecurityConfig {
 		).logout(logout -> logout
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/login?logout")
-//				.permitAll()
+				.permitAll()
 		);
-		
-//		// CSRF 対策を無効に設定 (一時的)
-//        http.csrf(csrf -> csrf
-//                .disable()
-//        );
-
-		
 		
 		return http.build();
 	}
 	
-	// インメモリ認証
-		
-	/*
-		@Bean
-	    InMemoryUserDetailsManager userDetailsService() {
-			
-			PasswordEncoder encoder = passwordEncoder();
-			
-	        UserDetails user = User.withUsername("user")
-	        		.password(encoder.encode("user"))
-	                .roles("GENERAL")
-	                .build();
-	        
-	        return new InMemoryUserDetailsManager(user);
-	    }
-	 */ 
-
 }

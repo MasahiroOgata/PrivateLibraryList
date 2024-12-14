@@ -13,10 +13,7 @@ import com.library.domain.book.service.BookService;
 import com.library.domain.user.service.impl.UserWithNameAndId;
 import com.library.repository.BookMapper;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class BookServiceImpl implements BookService {	
 	
 	@Autowired
@@ -67,7 +64,6 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public void addOneBook(MBook book) {
 		book.setUserId(getLoginUserId());
-		log.info(book.toString());
 		mapper.insertOneBook(book);
 	}
 	

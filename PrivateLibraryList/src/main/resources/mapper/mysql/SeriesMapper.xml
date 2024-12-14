@@ -43,9 +43,9 @@
 	</select>
 	
 	<!-- シリーズ名検索（重複確認） -->
-	<select id="findBySeriesName" resultType="String">
+	<select id="findBySeriesName" resultType="Integer">
 		select
-			series_name
+			id
 		from
 			series
 		where

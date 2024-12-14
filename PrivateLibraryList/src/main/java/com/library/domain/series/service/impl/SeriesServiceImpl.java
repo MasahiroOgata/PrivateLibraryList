@@ -50,7 +50,7 @@ public class SeriesServiceImpl implements SeriesService{
 	
 	/** シリーズ名検索（重複確認） */
 	@Override
-	public String checkSeriesName(String seriesName) {
+	public Integer checkSeriesName(String seriesName) {
 		return mapper.findBySeriesName(seriesName, getLoginUserId());
 	}
 	
