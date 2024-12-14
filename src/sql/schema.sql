@@ -1,0 +1,48 @@
+/* ユーザー */
+CREATE TABLE IF NOT EXISTS library.users (
+    id INT AUTO_INCREMENT NOT NULL,
+    user VARCHAR(50) NOT NULL,
+    pass VARCHAR(255) NOT NULL,
+    nickname VARCHAR(50) NOT NULL,
+    create_date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+/* 書籍情報 */
+CREATE TABLE IF NOT EXISTS library.books (
+    id INT AUTO_INCREMENT NOT NULL,
+    user_id INT NOT NULL,
+    book_title VARCHAR(50) NOT NULL,
+    author VARCHAR(50) NOT NULL,
+    purchased_date DATE NOT NULL,
+    finished_date DATE,
+    series_id INT,
+    vol_num INT,
+    publisher_id INT NOT NULL,
+    media TINYINT NOT NULL,
+    is_disposed TINYINT NOT NULL DEFAULT 0,
+    create_date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+/* シリーズインデックス */
+CREATE TABLE IF NOT EXISTS library.series (
+    id INT AUTO_INCREMENT NOT NULL,
+    user_id INT NOT NULL,
+    series_name VARCHAR(50),
+    create_date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+/* 出版社インデックス */
+CREATE TABLE IF NOT EXISTS library.publishers (
+    id INT AUTO_INCREMENT NOT NULL,
+    user_id INT NOT NULL,
+    publisher_name VARCHAR(50),
+    create_date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
