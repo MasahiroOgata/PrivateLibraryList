@@ -48,9 +48,9 @@ public class SecurityConfig {
 		);
 		
 		// CSRF 対策を無効に設定 (一時的)
-        http.csrf(csrf -> csrf
-                .disable()
-        );
+//        http.csrf(csrf -> csrf
+//                .disable()
+//        );
 
 		
 		
