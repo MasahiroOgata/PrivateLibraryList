@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- Mapperとxmlのマッピング -->
+<mapper namespace="com.library.repository.BookMapper">
+
+	<!-- マッピング定義（書籍） -->
+	<resultMap type="com.library.domain.book.model.MBook" id="book">
+		<id column="id" 					property="id" />
+		<result column="user_id"			property="userId" />
+		<result column="book_title" 		property="bookTitle" />
+		<result column="author" 			property="author" />
+		<result column="purchased_date"		property="purchasedDate" />
+		<result column="finished_date" 		property="finishedDate" />
+		<result column="series_id"			property="seriesId" />
+		<result column="vol_num" 			property="volNum" />
+		<result column="publisher_id"		property="publisherId" />
+		<result column="media" 				property="media" />
+		<result column="is_disposed" 		property="isDisposed" />
+		<association property="series" resultMap="series" columnPrefix="series_" />
+		<association property="publisher" resultMap="publishers" columnPrefix="publishers_" />		
+	</resultMap>
+	
+	<!-- マッピング定義（シリーズ） -->
+	<resultMap type="com.library.domain.series.model.MSeries" id="series">
+		<id column="id" property="id" />
+		<result column="series_name" property="seriesName" />
+	</resultMap>
+	
+	<!-- マッピング定義（出版社） -->
+	<resultMap type="com.library.domain.publisher.model.MPublisher" id="publishers">
+		<id column="id" property="id" />
+		<result column="publisher_name" property="publisherName" />
+	</resultMap>
+	
+
+	<!-- 蔵書複数取得 -->
+	<select id="findManyBooks" resultMap="book">
+		select
+			books.id, book_title, author, 
+			purchased_date, finished_date,
+			series_id, vol_num, is_disposed,
+			series.id as series_id,
+			series_name as series_series_name,
+			publisher_id,
+			publishers.id as publisers_id,
+			publisher_name as publishers_publisher_name
+		from
+			books
+			left join publishers
+			on books.publisher_id = publishers.id
+			left join series
+			on books.series_id = series.id
+		where
+			books.user_id = #{userId}
+			<if test="search != null">
+				and (
+					book_title like concat('%', #{search}, '%')
+					or author like concat('%', #{search}, '%')
+					or series_name like concat('%', #{search}, '%')
+					or publisher_name like concat('%', #{search}, '%')
+				)
+			</if>
+		order by
+			is_disposed,
+			purchased_date desc
+	</select>
+	
+	<!-- 蔵書複数取得（シリーズ単位） -->
+	<select id="findSeriesBooks" resultMap="book">
+		select
+			books.id, book_title, author, 
+			purchased_date, finished_date,
+			series_id, vol_num, is_disposed,
+			publisher_id,
+			publishers.id as publisers_id,
+			publisher_name as publishers_publisher_name
+		from
+			books
+			left join publishers
+			on books.publisher_id = publishers.id
+		where			
+			series_id = #{id}
+		order by
+			vol_num
+	</select>
+	
+	<!-- 蔵書複数取得（出版社単位） -->
+	<select id="findPublisherBooks" resultMap="book">
+		select
+			books.id, book_title, author, 
+			purchased_date, finished_date,
+			series_id, vol_num, is_disposed,
+			series.id as series_id,
+			series_name as series_series_name,
+			publisher_id
+		from
+			books
+			left join series
+			on books.series_id = series.id
+		where		
+			publisher_id = #{id}
+		order by
+			purchased_date desc
+	</select>
+	
+	<!-- 蔵書1冊取得 -->
+	<select id="findOneBook" resultMap="book">
+		select
+			books.id, books.user_id,
+			book_title, author, 
+			purchased_date, finished_date,
+			series_id, vol_num,
+			series_id as series_id,
+			series_name as series_series_name,
+			publisher_id,
+			publishers.id as publisers_id,
+			publisher_name as publishers_publisher_name,
+			media, is_disposed
+		from
+			books
+			left join publishers
+			on books.publisher_id = publishers.id
+			left join series
+			on books.series_id = series.id
+		where
+			books.id = #{id}
+			and books.user_id = #{userId}
+	</select>
+	
+	<!-- 蔵書1冊取得(当該シリーズ最新書籍) -->
+	<select id="findOneBookOfSeries" resultMap="book">
+		select
+			books.id, books.user_id,
+			book_title, author, 
+			purchased_date, finished_date,
+			series_id, vol_num,
+			series_id as series_id,
+			series_name as series_series_name,
+			publisher_id,
+			publishers.id as publisers_id,
+			publisher_name as publishers_publisher_name,
+			media
+		from
+			books
+			left join publishers
+			on books.publisher_id = publishers.id
+			left join series
+			on books.series_id = series.id
+		where
+			series_id = #{seriesId}
+		order by
+			purchased_date desc
+		limit 1
+	</select>
+	
+	<!-- 蔵書1冊登録 -->
+	<insert id="insertOneBook">
+		insert into books (
+			user_id,
+			book_title,
+			author,
+			purchased_date,
+			finished_date,
+			series_id,
+			vol_num,
+			publisher_id,
+			media
+		) values (
+			#{userId},
+			#{bookTitle},
+			#{author},
+			#{purchasedDate},
+			#{finishedDate},
+			#{seriesId},
+			#{volNum},
+			#{publisherId},
+			#{media}
+		)
+	</insert>
+	
+	<!-- 蔵書1冊更新 -->
+	<update id="updateOneBook">
+		update
+			books
+		set
+			book_title = #{bookTitle},
+			author = #{author},
+			purchased_date = #{purchasedDate},
+			finished_date = #{finishedDate},
+			series_id = #{seriesId},
+			vol_num = #{volNum},
+			publisher_id = #{publisherId},
+			media = #{media}
+		where
+			id = #{id}	
+	</update>
+	
+	<!-- 蔵書1冊処分（または取消） -->
+	<update id="setOneBookDisposed">
+		update
+			books
+		set
+			is_disposed = #{isDisposed}
+		where 
+			id = #{id}
+	</update>
+
+
+
+
+
+
+
+</mapper>

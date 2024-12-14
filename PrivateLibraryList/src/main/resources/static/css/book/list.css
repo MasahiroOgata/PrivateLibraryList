@@ -1,0 +1,5 @@
+@charset "UTF-8";
+
+.disposed .data {
+	text-decoration-line: line-through;
+}

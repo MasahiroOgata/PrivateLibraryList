@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+.main {
+	position: fixed;
+	display: block;
+	top: 58px;
+	bottom: 0;
+	padding-left: 20px;
+	overflow-y: auto;
+	height: calc(100vh - 58px);
+	margin-left: 0;
+}
+
+.header {
+	padding-top: 1rem !important;
+	padding-bottom: .5rem !important;
+	margin-bottom: 1rem !important;	
+}
+

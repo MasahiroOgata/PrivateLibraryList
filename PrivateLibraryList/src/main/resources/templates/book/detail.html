@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>書籍詳細</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="header border-bottom row justify-content-between mx-1">
+			<h1 class="h3">書籍詳細</h1>
+		</div>
+		
+		<table th:object="${book}" class="table table-striped table-bordered table-hover" style="max-width: 700px; margin: auto;">
+			<tr>
+				<th>タイトル</th>
+				<td colspan="2">
+				 	<span th:text="*{bookTitle}" th:classappend="*{isDisposed == 1}? text-decoration-line-through"></span>
+				 	<span th:text="*{isDisposed == 1}? '（処分済み）'"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>著者</th>
+				<td  colspan="2" th:text="*{author}"></td>
+			</tr>
+			<tr>
+				<th>シリーズ</th>
+				<td>
+					<th:block th:if="*{seriesId != null}">
+						<span th:text="*{series.seriesName}"></span>
+						<a class="text-center btn btn-primary btn-sm" th:href="@{'/series/detail/' + *{seriesId}}">詳細</a>
+					</th:block>
+				</td>
+				<td>
+					<span th:if="*{seriesId != null}"
+						 th:text="*{volNum}">
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<th>出版社</th>
+				<td th:text="*{publisher.publisherName}"></td>
+				<td th:text="*{media == 0}? '紙書籍' : '電子書籍'"></td>
+			</tr>
+			<tr>
+				<th>購入日</th>
+				<td colspan="2" th:text="${#dates.format(book.purchasedDate,'YYYY/MM/dd')}"></td>
+			</tr>
+			<tr>
+				<th>読了日</th>
+				<td colspan="2" th:text="${book.finishedDate == null}? '未' : ${#dates.format(book.finishedDate,'YYYY/MM/dd')}">未</td>
+			</tr>		
+		</table>
+		<div class="text-center my-3">
+			<a class="btn btn-secondary" th:href="@{${backURL}}">戻る</a>
+			<a class="btn btn-danger" th:href="@{'/book/dispose/' + *{id}}" th:text="${book.isDisposed == 0}? '処分' : '処分取消'"></a>
+			<a class="btn btn-primary" th:href="@{'/book/edit/' + *{id}}">修正</a>
+		</div>		
+	</div>
+
+</body>
+</html>
