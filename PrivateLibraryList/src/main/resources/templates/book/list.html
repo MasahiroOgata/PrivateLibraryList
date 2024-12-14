@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>蔵書一覧</title>
+<!-- 個別CSS読込 -->
+<link rel="stylesheet" th:href="@{/css/book/list.css}">
+</head>
+<body>
+	<div layout:fragment="content">
+		
+		<div class="header border-bottom mx-1">
+			<div class="d-flex justify-content-between">
+				<div class="d-inline-flex">
+					<h1 class="h3">蔵書一覧</h1>
+					<a class="btn btn-primary mx-3" th:href="@{/book/add}">書籍新規登録</a>
+				</div>
+				<div class="d-inline-flex">					
+					<div class="form-check form-switch m-2">
+						 <input class="form-check-input" type="checkbox" role="switch" id="showDisposedBooks"
+						 data-bs-toggle="collapse" th:href="@{#disposedBook}" aria-expanded="false">
+						 <label class="form-check-label" for="showDisposedBooks">処分済み書籍を含む</label>
+					</div>
+					<form method="get" th:action="@{/book/list}" class="row g-2">
+						<div class="form-group col-auto">
+							<input type="text" class="form-control" name="search" th:value="${search}">
+						</div>
+						<div class="col-auto">
+							<button type="submit" class="btn btn-primary mx-3">検索</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<table class="table table-bordered table-striped table-hover">
+			<thead class="table-light">
+				<tr>
+					<th scope="col">タイトル</th>
+					<th scope="col">著者</th>
+					<th scope="col">シリーズ</th>
+					<th scope="col">出版社</th>
+					<th scope="col">購入日</th>
+					<th scope="col">読了日</th>
+					<th scope="col">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item: ${bookList}" th:classappend="${item.isDisposed == 1}? 'collapse disposed'"
+					th:id="${item.isDisposed == 1}? 'disposedBook'">
+					<td class="data" scope="row" th:text="${item.bookTitle}"></td>
+					<td class="data" th:text="${item.author}"></td>
+					<td class="data">
+						<span th:if="${item.seriesId != null}"
+						 th:text="${item.series.seriesName}">
+						</span>
+					</td>
+					<td class="data" th:text="${item.publisher.publisherName}"></td>
+					<td class="data" th:text="${#dates.format(item.purchasedDate,'YYYY/MM/dd')}"></td>
+					<td class="data" th:text="${item.finishedDate == null}? '未' : ${#dates.format(item.finishedDate,'YYYY/MM/dd')}"></td>
+					<td class="text-center">
+						<a class="btn btn-sm btn-primary" th:href="@{'/book/finish/' + ${item.id}}"
+						th:text="${item.finishedDate == null}? '読了' : '未読'"></a>
+						<a class="btn btn-sm btn-info" th:href="@{'/book/detail/' + ${item.id}}">詳細</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</body>
+</html>

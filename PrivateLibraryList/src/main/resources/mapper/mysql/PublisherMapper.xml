@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- Mapperとxmlのマッピング -->
+<mapper namespace="com.library.repository.PublisherMapper">
+
+	<!-- 出版社リスト取得 -->
+	<select id="findManyPublishers" resultType="MPublisher">
+		select
+			*
+		from
+			publishers
+		where
+			user_id = #{userId}	
+	</select>
+	
+	<!-- 出版社1件取得 -->
+	<select id="findOnePublisher" resultType="MPublisher">
+		select
+			*
+		from
+			publishers
+		where
+			id = #{id}
+			and user_id = #{userId}	
+	</select>
+	
+	<!-- 出版社名検索（重複確認） -->
+	<select id="findByPublisherName" resultType="Integer">
+		select
+			id
+		from
+			publishers
+		where
+			user_id = #{userId}
+			and publisher_name = #{publisherName}	
+	</select>
+	
+	<!-- 出版社1件登録 -->
+	<insert id="insertOnePublisher">
+		insert into publishers (
+			user_id,
+			publisher_name
+		) values (
+			#{userId},
+			#{publisherName}
+		)
+	</insert>
+	
+	<!-- 出版社1件更新 -->
+	<update id="updateOnePublisher">
+		update
+			publishers
+		set
+			publisher_name = #{publisherName}
+		where
+			id = #{id}
+	</update>
+	
+	<!-- 出版社1件削除 -->
+	<update id="deleteOnePublisherData">
+		delete from
+			publishers
+		where
+			id = #{id}
+	</update>
+
+</mapper>

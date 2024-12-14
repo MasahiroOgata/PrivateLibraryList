@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>出版社一覧</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="header border-bottom row justify-content-between mx-1">
+			<div class="d-flex">
+				<h1 class="h3">出版社一覧</h1>
+				<a class="btn btn-primary mx-3" th:href="@{/publisher/create}">出版社新規登録</a>
+			</div>
+		</div>
+		
+		<table class="table table-bordered table-striped table-hover"
+		style="max-width: 700px; margin: auto;">
+			<tr th:each="item: ${publisherList}">
+				<td th:text="${item.publisherName}"></td>
+				<td class="text-center">
+					<a class="btn btn-sm btn-info" th:href="@{'/publisher/detail/' + ${item.id}}">詳細</a>
+				</td>
+			</tr>
+		</table>
+		
+	</div>
+</body>
+</html>

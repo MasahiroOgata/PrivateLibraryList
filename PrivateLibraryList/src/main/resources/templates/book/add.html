@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>書籍新規登録</title>
+<script>
+function enableVolNum() {
+	const seriesId = document.getElementById('seriesId').value;
+	if (seriesId) {
+		document.getElementById('volNum').disabled = false;
+	} else {
+		document.getElementById('volNum').disabled = true;
+	}
+}
+</script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="header border-bottom row justify-content-between mx-1">
+			<h1 class="h3">書籍新規登録</h1>
+		</div>
+		
+		<form method="post" th:action="@{/book/add}" th:object="${bookAddForm}" style="max-width: 700px; margin: auto;">
+			<table class="table table-striped table-bordered table-hover">
+				<tr>
+					<th>タイトル</th>
+					<td>
+						<input type="text" class="form-control" th:field="*{bookTitle}" th:errorclass="is-invalid">
+						<div class="invalid-feedback" th:errors="*{bookTitle}"></div>
+					</td>
+				</tr>
+				<tr>
+					<th>著者</th>
+					<td>
+						<input type="text" class="form-control" th:field="*{author}" th:errorclass="is-invalid">
+						<div class="invalid-feedback" th:errors="*{author}"></div>
+					</td>
+				</tr>
+				<tr>
+					<th>出版社</th>
+					<td>
+						<div class="form-group">
+							<input type="text" class="form-control" list="publisherOptions" th:field="*{publisherName}" th:errorclass="is-invalid">
+							<div class="invalid-feedback" th:errors="*{publisherName}"></div>
+							<datalist id="publisherOptions">
+								<div th:each="item: ${publisherList}">
+									<option th:text="${item.publisherName}">
+								</div>
+							</datalist>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th></th>
+					<td>
+						<div class="form-check-inline my-1" >
+							<input type="radio" class="form-check-input" th:value="0" th:field="*{media}" th:errorclass="is-invalid">
+							<label class="form-check-label">紙</label>
+							<input type="radio" class="form-check-input" th:value="1" th:field="*{media}" th:errorclass="is-invalid">
+							<label class="form-check-label">電子</label>
+						</div>
+						<div class="text-danger" th:if="${#fields.hasErrors('media')}" th:errors="*{media}"></div>
+					</td>
+				</tr>
+				<tr>
+					<th>シリーズ</th>
+					<td>
+						<div class="form-group">
+							<select class="form-control" th:field="*{seriesId}" onchange="enableVolNum()" >
+								<option th:text="なし" th:value="null"></option>
+								<div th:each="item: ${seriesList}">
+									<option th:text="${item.seriesName}" th:value="${item.id}"></option>
+								</div>
+							</select>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>巻数</th>
+					<td>
+						<input type="number" class="form-control" th:field="*{volNum}" disabled>
+					</td>
+				</tr>
+				<tr>
+					<th>購入日</th>
+					<td>
+						<input type="date" class="form-control" placeholder="yyyy-MM-dd" th:field="*{purchasedDate}" th:errorclass="is-invalid">
+						<div class="invalid-feedback" th:errors="*{purchasedDate}"></div>
+					</td>
+				</tr>
+				<tr>
+					<th></th>
+					<td>
+						<div class="form-check-inline my-1">
+							<input type="checkbox" class="form-check-input" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" th:field="*{finishedDate}">
+							<label class="form-check-label">読了</label>
+						</div>
+					</td>
+				</tr>
+	
+			</table>
+			
+			<div class="text-center">
+				<a class="btn btn-secondary" th:href="@{/book/list}">戻る</a>
+				<button type="submit" class="btn btn-primary">登録</button>
+			</div>
+		</form>
+		
+	</div>	
+</body>
+</html>

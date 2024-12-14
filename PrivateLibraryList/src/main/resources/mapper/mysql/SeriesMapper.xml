@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- Mapperとxmlのマッピング -->
+<mapper namespace="com.library.repository.SeriesMapper">
+
+	<!-- シリーズリスト取得 -->
+	<select id="findManySeries" resultType="MSeries">
+		select
+			*
+		from
+			series
+		where
+			user_id = #{userId}
+	</select>
+	
+	<!-- シリーズリスト取得(最新購入順) -->
+	<select id="findManySeriesPurchasedOrder" resultType="MSeries">
+		select 
+			series.*
+		from
+			series
+			left join books
+			on series.id = books.series_id
+		where
+			series.user_id = #{userId}
+		group by
+			series.id
+		order by
+			max(books.purchased_date) desc
+	</select>
+	
+	<!-- シリーズ1件取得 -->
+	<select id="findOneSeries" resultType="MSeries">
+		select
+			*
+		from
+			series
+		where
+			id = #{id}
+			and user_id = #{userId}
+	</select>
+	
+	<!-- シリーズ名検索（重複確認） -->
+	<select id="findBySeriesName" resultType="String">
+		select
+			series_name
+		from
+			series
+		where
+			user_id = #{userId}
+			and series_name = #{seriesName}	
+	</select>
+	
+	<!-- シリーズ1件登録 -->
+	<insert id="insertOneSeries">
+		insert into series (
+			user_id,
+			series_name
+		) values (
+			#{userId},
+			#{seriesName}
+		)
+	</insert>
+	
+	<!-- シリーズ1件更新 -->
+	<update id="updateOneSeries">
+		update
+			series
+		set
+			series_name = #{seriesName}
+		where
+			id = #{id}
+	</update>
+	
+	<!-- シリーズ1件削除 -->
+	<update id="deleteOneSeriesData">
+		delete from
+			series
+		where
+			id = #{id}
+	</update>
+
+</mapper>

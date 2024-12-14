@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>シリーズ一覧</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="header border-bottom row justify-content-between mx-1">
+			<div class="d-flex">
+				<h1 class="h3">シリーズ一覧</h1>
+				<a class="btn btn-primary mx-3" th:href="@{/series/create}">新シリーズ登録</a>
+			</div>
+		</div>
+		
+		<table class="table table-bordered table-striped table-hover">
+			<thead class="table-light">
+				<tr>
+					<th scope="col" style="width: 35%;">タイトル</th>
+					<th scope="col" style="width: 30%;">著者</th>
+					<th scope="col" style="width: 5%;">巻数</th>
+					<th scope="col" style="width: 10%;">出版社</th>
+					<th scope="col" style="width: 10%;">購入日</th>
+					<th scope="col" style="width: 10%;">読了日</th>
+				</tr>
+			</thead>
+			<tbody th:each="series: ${seriesList}">
+				<tr class="table-info">
+					<td scope="row" colspan="6" >
+						<div class="d-flex justify-content-between">
+							<p class="col-11 m-0 clickable" data-bs-toggle="collapse"
+							 th:href="@{'#' + ${series.id}}" role="button" aria-expanded="false"
+							 th:attr="aria-controls=${series.id}" th:text="|${series.seriesName}（${series.seriesBooks.size()}冊）|"></p>
+							<a class="text-center btn btn-primary btn-sm" th:href="@{'/series/detail/' + ${series.id}}">詳細</a>
+						</div>
+					</td>
+				</tr>
+				<tr scope="row" th:each="book: ${series.seriesBooks}" class="collapse hyde" th:attr="id=${series.id}"
+				 	th:classappend="${book.isDisposed == 1}? text-decoration-line-through">
+					<td scope="row" th:text="${book.bookTitle}"></td>
+					<td th:text="${book.author}"></td>
+					<td th:text="${book.volNum}"></td>
+					<td th:text="${book.publisher.publisherName}"></td>
+					<td th:text="${#dates.format(book.purchasedDate,'YYYY/MM/dd')}"></td>
+					<td th:text="${book.finishedDate == null}? '未' : ${#dates.format(book.finishedDate,'YYYY/MM/dd')}"></td>
+				</tr>
+			</tbody>
+		</table>
+				
+	</div>
+</body>
+</html>
