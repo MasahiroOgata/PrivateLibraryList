@@ -24,11 +24,8 @@ import com.library.domain.series.model.MSeries;
 import com.library.domain.series.service.SeriesService;
 import com.library.form.BookAddToSeriesForm;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Controller
 @RequestMapping("/series/add")
-@Slf4j
 public class SeriesAddController {
 	
 	@Autowired
@@ -50,6 +47,10 @@ public class SeriesAddController {
 			MSeries series = seriesService.getOneSeries(form.getSeriesId());
 			form.setSeriesName(series.getSeriesName());
 			
+			/*
+			 * シリーズに所属する書籍の中で購入日が最新のものを検索
+			 * 書籍が存在すれば著者名と出版社名をformにセット
+			 */
 			MBook book = bookService.getOneBookOfSeries(series.getId());
 			if (book != null) {
 				form.setAuthor(book.getAuthor());
@@ -76,8 +77,6 @@ public class SeriesAddController {
 	
 	@PostMapping("{seriesId}")
 	public String addBookToSeries(Model model, @ModelAttribute @Validated BookAddToSeriesForm form, BindingResult bindingResult) {
-		
-		log.info(form.toString());
 		
 		if (bindingResult.hasErrors()) {
 			return addBookToSeries(model, form);
