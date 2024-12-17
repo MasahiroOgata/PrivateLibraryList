@@ -61,8 +61,12 @@
 					<td class="data" th:text="${#dates.format(item.purchasedDate,'YYYY/MM/dd')}"></td>
 					<td class="data" th:text="${item.finishedDate == null}? '未' : ${#dates.format(item.finishedDate,'YYYY/MM/dd')}"></td>
 					<td class="text-center">
-						<a class="btn btn-sm btn-primary" th:href="@{'/book/finish/' + ${item.id}}"
-						th:text="${item.finishedDate == null}? '読了' : '未読'"></a>
+						<th:block th:if="${item.finishedDate == null}">
+							<a class="btn btn-sm btn-primary" th:href="@{'/book/finish/' + ${item.id}}">読了</a>
+						</th:block>
+						<th:block th:if="${item.finishedDate != null}">
+							<a class="btn btn-sm btn-secondary" th:href="@{'/book/finish/' + ${item.id}}">未読</a>
+						</th:block>
 						<a class="btn btn-sm btn-info" th:href="@{'/book/detail/' + ${item.id}}">詳細</a>
 					</td>
 				</tr>

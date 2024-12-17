@@ -92,23 +92,10 @@ function doChange() {
 					</td>
 				</tr>
 				<tr>
-					<th></th>
-					<div th:if="${bookEditForm.finishedDate == null}">
-						<td>
-							<div class="form-check-inline my-1">
-								<input type="checkbox" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" th:field="*{finishedDate}">
-								<label class="form-check-label" >読了</label>	
-							</div>
-						</td>
-					</div>
-					<div th:if="${bookEditForm.finishedDate != null}">
-						<td>
-							<div class="form-check-inline my-1">
-								<input type="checkbox" checked th:value="${#dates.format(bookEditForm.finishedDate, 'yyyy-MM-dd')}" th:field="*{finishedDate}">
-								<label class="form-check-label" >読了</label>	
-							</div>
-						</td>
-					</div>
+					<th>読了日</th>
+					<td>
+						<input type="date" class="form-control" placeholder="yyyy-MM-dd" th:field="*{finishedDate}">
+					</td>
 				</tr>
 			</table>
 			
