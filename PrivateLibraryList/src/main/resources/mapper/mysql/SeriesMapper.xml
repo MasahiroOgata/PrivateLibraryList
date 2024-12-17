@@ -42,8 +42,8 @@
 			and user_id = #{userId}
 	</select>
 	
-	<!-- シリーズ名検索（重複確認） -->
-	<select id="findBySeriesName" resultType="Integer">
+	<!-- シリーズ名からIDを取得(重複確認に使用) -->
+	<select id="findSeriesIdByName" resultType="Integer">
 		select
 			id
 		from

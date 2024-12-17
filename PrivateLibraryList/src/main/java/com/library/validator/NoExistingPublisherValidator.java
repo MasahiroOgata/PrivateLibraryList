@@ -1,7 +1,5 @@
 package com.library.validator;
 
-import java.util.Objects;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.library.domain.publisher.service.PublisherService;
@@ -18,12 +16,10 @@ public class NoExistingPublisherValidator implements ConstraintValidator<NoExist
 	
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		
-		Integer publisherId = publisherService.checkPublisherName(value);
-		
-		if (Objects.isNull(publisherId)) {
-			return true;
+		if (publisherService.isRegistered(value)) {
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 }

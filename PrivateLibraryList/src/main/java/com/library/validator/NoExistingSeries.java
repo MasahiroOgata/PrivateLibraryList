@@ -16,7 +16,7 @@ import jakarta.validation.Payload;
 @Constraint(validatedBy = NoExistingSeriesValidator.class)
 public @interface NoExistingSeries {
 	
-	String message() default "その名前のシリーズはすでに存在します";
+	String message() default "";
 	
 	Class<?>[] groups() default {};
 	 

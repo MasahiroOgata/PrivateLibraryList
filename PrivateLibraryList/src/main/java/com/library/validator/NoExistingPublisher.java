@@ -16,7 +16,7 @@ import jakarta.validation.Payload;
 @Constraint(validatedBy = NoExistingPublisherValidator.class)
 public @interface NoExistingPublisher {
 	
-	String message() default "その名前の出版社はすでに存在します";
+	String message() default "";
 	
 	Class<?>[] groups() default {};
 	 

@@ -15,8 +15,8 @@ public interface PublisherMapper {
 	/** 出版社1件取得 */
 	public MPublisher findOnePublisher(int id, int userId);
 	
-	/** 出版社名検索（重複確認） */
-	public Integer findByPublisherName(String publisherName, int userId);
+	/** 出版社名からIDを取得(重複確認にも使用) */
+	public Integer findPublisherIdByName(String publisherName, int userId);
 	
 	/** 出版社1件登録 */
 	public int insertOnePublisher(MPublisher publisher);

@@ -67,14 +67,14 @@ public class BookAddController {
 		 * 既存であれば出版社IDをformにセット
 		 * なければ新規登録後、出版社IDを取得してformにセット 
 		 */
-		Integer publisherId = publisherService.checkPublisherName(form.getPublisherName());
+		Integer publisherId = publisherService.fetchPublisherIdByName(form.getPublisherName());
 		if (Objects.nonNull(publisherId)) {
 			form.setPublisherId(publisherId);
 		} else {
 			MPublisher publisher = new MPublisher();
 			publisher.setPublisherName(form.getPublisherName());
 			publisherService.addOnePublisher(publisher);
-			form.setPublisherId(publisherService.checkPublisherName(form.getPublisherName()));		
+			form.setPublisherId(publisherService.fetchPublisherIdByName(form.getPublisherName()));		
 		}
 		
 		modelMapper.getConfiguration().setAmbiguityIgnored(true);

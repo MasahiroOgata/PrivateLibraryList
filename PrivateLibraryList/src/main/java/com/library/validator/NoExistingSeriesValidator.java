@@ -1,7 +1,5 @@
 package com.library.validator;
 
-import java.util.Objects;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.library.domain.series.service.SeriesService;
@@ -18,12 +16,10 @@ public class NoExistingSeriesValidator implements ConstraintValidator<NoExisting
 	
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		
-		Integer seriesId = seriesService.checkSeriesName(value);
-		
-		if (Objects.isNull(seriesId)) {
-			return true;
+		if (seriesService.isRegistered(value)) {
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 }

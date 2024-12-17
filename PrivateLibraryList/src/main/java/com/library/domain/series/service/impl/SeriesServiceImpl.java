@@ -48,10 +48,10 @@ public class SeriesServiceImpl implements SeriesService{
 		return series;
 	}
 	
-	/** シリーズ名検索（重複確認） */
+	/** シリーズ名の重複を確認 */
 	@Override
-	public Integer checkSeriesName(String seriesName) {
-		return mapper.findBySeriesName(seriesName, getLoginUserId());
+	public boolean isRegistered(String seriesName) {
+		return mapper.findSeriesIdByName(seriesName, getLoginUserId()) != null;
 	}
 	
 	/** シリーズ1件登録 */

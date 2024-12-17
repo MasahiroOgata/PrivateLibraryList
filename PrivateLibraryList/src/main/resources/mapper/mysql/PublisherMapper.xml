@@ -26,8 +26,8 @@
 			and user_id = #{userId}	
 	</select>
 	
-	<!-- 出版社名検索（重複確認） -->
-	<select id="findByPublisherName" resultType="Integer">
+	<!-- 出版社名からIDを取得(重複確認にも使用) -->
+	<select id="findPublisherIdByName" resultType="Integer">
 		select
 			id
 		from

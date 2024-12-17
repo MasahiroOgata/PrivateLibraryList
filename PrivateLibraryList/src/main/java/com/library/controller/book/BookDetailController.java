@@ -20,7 +20,7 @@ public class BookDetailController {
 	private BookService bookService;
 	
 	@GetMapping("{id}")
-	public String showBookDetail(Model model, @PathVariable("id") int id) {
+	public String showBookDetail(Model model, @PathVariable int id) {
 		
 		MBook book = bookService.getOneBook(id);
 		

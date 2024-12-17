@@ -66,14 +66,14 @@ public class BookEditController {
 			return editBookData(model,form);
 		}
 		
-		Integer publisherId = publisherService.checkPublisherName(form.getPublisherName());		
+		Integer publisherId = publisherService.fetchPublisherIdByName(form.getPublisherName());		
 		if (Objects.nonNull(publisherId)) {
 			form.setPublisherId(publisherId);
 		} else {
 			MPublisher publisher = new MPublisher();
 			publisher.setPublisherName(form.getPublisherName());
 			publisherService.addOnePublisher(publisher);
-			form.setPublisherId(publisherService.checkPublisherName(form.getPublisherName()));		
+			form.setPublisherId(publisherService.fetchPublisherIdByName(form.getPublisherName()));		
 		}
 		
 		MBook book = modelMapper.map(form, MBook.class);

@@ -42,10 +42,16 @@ public class PublisherServiceImpl implements PublisherService {
 		return publisher;
 	}
 	
-	/** 出版社名検索（重複確認） */
+	/** 出版社名からIDを取得 */
 	@Override
-	public Integer checkPublisherName(String publisherName) {
-		return mapper.findByPublisherName(publisherName, getLoginUserId());
+	public Integer fetchPublisherIdByName(String publisherName) {
+		return mapper.findPublisherIdByName(publisherName, getLoginUserId());
+	}
+	
+	/** 出版社名の重複を確認 */
+	@Override
+	public boolean isRegistered(String publisherName) {
+		return mapper.findPublisherIdByName(publisherName, getLoginUserId()) != null;
 	}
 	
 	/** 出版社1件登録 */

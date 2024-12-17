@@ -18,8 +18,8 @@ public interface SeriesMapper {
 	/** シリーズ1件取得 */
 	public MSeries findOneSeries(int id, int userId);
 	
-	/** シリーズ名検索（重複確認） */
-	public Integer findBySeriesName(String seriesName, int userId);
+	/** シリーズ名からIDを取得(重複確認に使用) */
+	public Integer findSeriesIdByName(String seriesName, int userId);
 	
 	/** シリーズ1件登録 */
 	public int insertOneSeries(MSeries series);
