@@ -16,7 +16,7 @@ public interface PublisherService {
 	public Integer fetchPublisherIdByName(String publisherName);
 	
 	/** 出版社名の重複を確認 */
-	public boolean isRegistered(String publisherName);
+	public boolean isRegisteredName(String publisherName);
 	
 	/** 出版社1件登録 */
 	public void addOnePublisher(MPublisher publisher);

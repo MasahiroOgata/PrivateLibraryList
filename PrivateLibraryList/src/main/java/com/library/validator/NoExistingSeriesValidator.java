@@ -16,7 +16,7 @@ public class NoExistingSeriesValidator implements ConstraintValidator<NoExisting
 	
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		
-		if (seriesService.isRegistered(value)) {
+		if (seriesService.isRegisteredName(value)) {
 			return false;
 		}
 		return true;

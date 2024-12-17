@@ -2,7 +2,6 @@ package com.library.controller.book;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,24 +61,22 @@ public class BookAddController {
 			return addBook(model, form);
 		}
 		
+		modelMapper.getConfiguration().setAmbiguityIgnored(true);
+		MBook book = modelMapper.map(form, MBook.class);
+		
 		/* 
 		 * ユーザーが入力した出版社名がDBに存在するか確認
-		 * 既存であれば出版社IDをformにセット
-		 * なければ新規登録後、出版社IDを取得してformにセット 
+		 * 既存であれば出版社IDをMBookにセットして登録
+		 * なければ出版社新規登録と書籍新規登録を同時に実行 
 		 */
-		Integer publisherId = publisherService.fetchPublisherIdByName(form.getPublisherName());
-		if (Objects.nonNull(publisherId)) {
-			form.setPublisherId(publisherId);
+		if (publisherService.isRegisteredName(form.getPublisherName())) {
+			book.setPublisherId(publisherService.fetchPublisherIdByName(form.getPublisherName()));
+			bookService.addOneBook(book);
 		} else {
 			MPublisher publisher = new MPublisher();
 			publisher.setPublisherName(form.getPublisherName());
-			publisherService.addOnePublisher(publisher);
-			form.setPublisherId(publisherService.fetchPublisherIdByName(form.getPublisherName()));		
+			bookService.addOneBookAndOnePublisher(book, publisher);
 		}
-		
-		modelMapper.getConfiguration().setAmbiguityIgnored(true);
-		MBook book = modelMapper.map(form, MBook.class);
-		bookService.addOneBook(book);
 		
 		return "redirect:/book/list";
 	}

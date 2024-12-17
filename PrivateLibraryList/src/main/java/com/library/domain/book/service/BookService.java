@@ -3,6 +3,7 @@ package com.library.domain.book.service;
 import java.util.List;
 
 import com.library.domain.book.model.MBook;
+import com.library.domain.publisher.model.MPublisher;
 
 public interface BookService {
 	
@@ -24,8 +25,14 @@ public interface BookService {
 	/** 蔵書1冊登録 */
 	public void addOneBook(MBook book);
 	
+	/** 蔵書1冊登録および出版社1件登録 */
+	public void addOneBookAndOnePublisher(MBook book, MPublisher publisher);
+	
 	/** 蔵書1冊更新 */
 	public void editOneBook(MBook book);
+	
+	/** 蔵書1冊更新および出版社1件登録 */
+	public void editOneBookAndAddOnePublisher(MBook book, MPublisher publisher);
 	
 	/** 蔵書1冊処分（または取消） */
 	public void disposeOneBook(MBook book);

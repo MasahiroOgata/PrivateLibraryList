@@ -1,7 +1,6 @@
 package com.library.controller.book;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -66,18 +65,17 @@ public class BookEditController {
 			return editBookData(model,form);
 		}
 		
-		Integer publisherId = publisherService.fetchPublisherIdByName(form.getPublisherName());		
-		if (Objects.nonNull(publisherId)) {
-			form.setPublisherId(publisherId);
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		MBook book = modelMapper.map(form, MBook.class);
+		
+		if (publisherService.isRegisteredName(form.getPublisherName())) {
+			book.setPublisherId(publisherService.fetchPublisherIdByName(form.getPublisherName()));
+			bookService.editOneBook(book);
 		} else {
 			MPublisher publisher = new MPublisher();
 			publisher.setPublisherName(form.getPublisherName());
-			publisherService.addOnePublisher(publisher);
-			form.setPublisherId(publisherService.fetchPublisherIdByName(form.getPublisherName()));		
+			bookService.editOneBookAndAddOnePublisher(book, publisher);
 		}
-		
-		MBook book = modelMapper.map(form, MBook.class);
-		bookService.editOneBook(book);
 		
 		return "redirect:/book/detail/" + form.getId();
 	}

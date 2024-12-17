@@ -50,7 +50,7 @@ public class PublisherServiceImpl implements PublisherService {
 	
 	/** 出版社名の重複を確認 */
 	@Override
-	public boolean isRegistered(String publisherName) {
+	public boolean isRegisteredName(String publisherName) {
 		return mapper.findPublisherIdByName(publisherName, getLoginUserId()) != null;
 	}
 	

@@ -2,7 +2,6 @@ package com.library.controller.series;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -82,19 +81,17 @@ public class SeriesAddController {
 			return addBookToSeries(model, form);
 		}
 		
-		Integer publisherId = publisherService.fetchPublisherIdByName(form.getPublisherName());
-		if (Objects.nonNull(publisherId)) {
-			form.setPublisherId(publisherId);
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		MBook book = modelMapper.map(form, MBook.class);
+		
+		if (publisherService.isRegisteredName(form.getPublisherName())) {
+			book.setPublisherId(publisherService.fetchPublisherIdByName(form.getPublisherName()));
+			bookService.addOneBook(book);
 		} else {
 			MPublisher publisher = new MPublisher();
 			publisher.setPublisherName(form.getPublisherName());
-			publisherService.addOnePublisher(publisher);
-			form.setPublisherId(publisherService.fetchPublisherIdByName(form.getPublisherName()));		
+			bookService.addOneBookAndOnePublisher(book, publisher);
 		}
-		
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-		MBook book = modelMapper.map(form, MBook.class);
-		bookService.addOneBook(book);
 		
 		return "redirect:/series/detail/" + form.getSeriesId();
 	}

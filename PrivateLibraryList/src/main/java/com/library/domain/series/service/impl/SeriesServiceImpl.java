@@ -50,7 +50,7 @@ public class SeriesServiceImpl implements SeriesService{
 	
 	/** シリーズ名の重複を確認 */
 	@Override
-	public boolean isRegistered(String seriesName) {
+	public boolean isRegisteredName(String seriesName) {
 		return mapper.findSeriesIdByName(seriesName, getLoginUserId()) != null;
 	}
 	

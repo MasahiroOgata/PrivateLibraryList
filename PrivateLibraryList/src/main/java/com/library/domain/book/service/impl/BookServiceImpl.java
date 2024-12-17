@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.library.aspect.NotFoundException;
 import com.library.domain.book.model.MBook;
 import com.library.domain.book.service.BookService;
+import com.library.domain.publisher.model.MPublisher;
+import com.library.domain.publisher.service.PublisherService;
 import com.library.domain.user.service.impl.UserWithNameAndId;
 import com.library.repository.BookMapper;
 
@@ -18,6 +21,9 @@ public class BookServiceImpl implements BookService {
 	
 	@Autowired
 	private BookMapper mapper;
+	
+	@Autowired
+	private PublisherService publisherService;
 	
 	private int getLoginUserId() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();		
@@ -67,10 +73,28 @@ public class BookServiceImpl implements BookService {
 		mapper.insertOneBook(book);
 	}
 	
+	/** 蔵書1冊登録および出版社1件登録 */
+	@Transactional
+	@Override
+	public void addOneBookAndOnePublisher(MBook book, MPublisher publisher) {
+		publisherService.addOnePublisher(publisher);
+		book.setPublisherId(publisherService.fetchPublisherIdByName(publisher.getPublisherName()));
+		addOneBook(book);		
+	}
+	
 	/** 蔵書1冊更新 */
 	@Override
 	public void editOneBook(MBook book) {
 		mapper.updateOneBook(book);
+	}
+	
+	/** 蔵書1冊更新および出版社1件登録 */
+	@Transactional
+	@Override
+	public void editOneBookAndAddOnePublisher(MBook book, MPublisher publisher) {
+		publisherService.addOnePublisher(publisher);
+		book.setPublisherId(publisherService.fetchPublisherIdByName(publisher.getPublisherName()));
+		editOneBook(book);
 	}
 	
 	/** 蔵書1冊処分（または取消） */
