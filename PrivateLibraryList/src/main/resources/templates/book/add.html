@@ -80,7 +80,8 @@ function enableVolNum() {
 				<tr>
 					<th>巻数</th>
 					<td>
-						<input type="number" class="form-control" th:field="*{volNum}" disabled>
+						<input type="number" class="form-control" th:field="*{volNum}" th:errorclass="is-invalid" th:disabled="*{seriesId == null}">
+						<div class="invalid-feedback" th:errors="*{volNum}"></div>
 					</td>
 				</tr>
 				<tr>

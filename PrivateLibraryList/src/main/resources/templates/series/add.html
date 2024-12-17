@@ -68,7 +68,8 @@
 				<tr>
 					<th>巻数</th>
 					<td>
-						<input type="number" class="form-control" th:field="*{volNum}">
+						<input type="number" class="form-control" th:field="*{volNum}" th:errorclass="is-invalid">
+						<div class="invalid-feedback" th:errors="*{volNum}"></div>
 					</td>
 				</tr>
 				<tr>

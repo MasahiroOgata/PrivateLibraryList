@@ -16,10 +16,7 @@ public class NoExistingPublisherValidator implements ConstraintValidator<NoExist
 	
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		
-		if (publisherService.isRegisteredName(value)) {
-			return false;
-		}
-		return true;
+		return !(publisherService.isRegisteredName(value)) ;
 	}
 
 }
