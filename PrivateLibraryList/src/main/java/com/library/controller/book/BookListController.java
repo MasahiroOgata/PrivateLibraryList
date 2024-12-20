@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.library.domain.book.model.MBook;
 import com.library.domain.book.service.BookService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping("/book/list")
+@Slf4j
 public class BookListController {
 	
 	@Autowired
@@ -23,6 +26,8 @@ public class BookListController {
 	public String getBookList(Model model, @RequestParam(required = false) String search) {
 		
 		List<MBook> bookList = bookService.getBookList(search);
+		
+		log.info(bookList.toString());
 		
 		model.addAttribute("search", search);
 		model.addAttribute("bookList", bookList);
