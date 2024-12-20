@@ -38,7 +38,7 @@
 	</select>
 	
 	<!-- 出版社1件登録 -->
-	<insert id="insertOnePublisher">
+	<insert id="insertOnePublisher" useGeneratedKeys="true" keyProperty="id">
 		insert into publishers (
 			user_id,
 			publisher_name

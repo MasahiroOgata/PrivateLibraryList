@@ -66,7 +66,7 @@ public class BookAddController {
 		
 		/* 
 		 * ユーザーが入力した出版社名がDBに存在するか確認
-		 * 既存であれば出版社IDをMBookにセットして登録
+		 * 既存であれば出版社IDをMBookにセットして書籍新規登録
 		 * なければ出版社新規登録と書籍新規登録を同時に実行 
 		 */
 		if (publisherService.isRegisteredName(form.getPublisherName())) {

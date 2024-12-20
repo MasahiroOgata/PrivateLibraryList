@@ -31,7 +31,7 @@ public class BookDetailController {
 	}
 	
 	@PostMapping("{id}")
-	public String showBookDetail(Model model, @PathVariable("id") int id, @RequestParam String backURL) {
+	public String showBookDetail(Model model, @PathVariable int id, @RequestParam String backURL) {
 		
 		MBook book = bookService.getOneBook(id);
 		

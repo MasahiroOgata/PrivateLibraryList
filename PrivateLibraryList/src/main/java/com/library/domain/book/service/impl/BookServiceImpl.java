@@ -78,7 +78,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public void addOneBookAndOnePublisher(MBook book, MPublisher publisher) {
 		publisherService.addOnePublisher(publisher);
-		book.setPublisherId(publisherService.fetchPublisherIdByName(publisher.getPublisherName()));
+		book.setPublisherId(publisher.getId());
 		addOneBook(book);		
 	}
 	
@@ -93,7 +93,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public void editOneBookAndAddOnePublisher(MBook book, MPublisher publisher) {
 		publisherService.addOnePublisher(publisher);
-		book.setPublisherId(publisherService.fetchPublisherIdByName(publisher.getPublisherName()));
+		book.setPublisherId(publisher.getId());
 		editOneBook(book);
 	}
 	
