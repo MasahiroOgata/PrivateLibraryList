@@ -28,6 +28,7 @@ public class BookListController {
 		List<MBook> bookList = bookService.getBookList(search);
 		
 		log.info(bookList.toString());
+		log.info(search);
 		
 		model.addAttribute("search", search);
 		model.addAttribute("bookList", bookList);
