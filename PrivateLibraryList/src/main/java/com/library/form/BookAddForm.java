@@ -30,6 +30,8 @@ public class BookAddForm {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	Date finishedDate;
 	
+	String seriesName;
+	
 	Integer seriesId;
 	
 	@Min(0)

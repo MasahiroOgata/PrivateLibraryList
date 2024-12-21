@@ -22,8 +22,11 @@ import com.library.domain.series.model.MSeries;
 import com.library.domain.series.service.SeriesService;
 import com.library.form.BookAddForm;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping("/book/add")
+@Slf4j
 public class BookAddController {
 	
 	@Autowired
@@ -44,6 +47,9 @@ public class BookAddController {
 		List<MPublisher> publisherList = publisherService.getPublisherList();
 		List<MSeries> seriesList = seriesService.getSeriesList();
 		
+		log.info(form.toString());
+		
+		model.addAttribute("bookAddForm", form);
 		model.addAttribute("publisherList", publisherList);
 		model.addAttribute("seriesList", seriesList);
 		
@@ -54,12 +60,38 @@ public class BookAddController {
 		return "book/add";
 	}
 	
-	@PostMapping("")
-	public String addBook(Model model,@ModelAttribute @Validated BookAddForm form, BindingResult bindingResult) {
+	@PostMapping("confirm")
+	public String confirmAddBook(Model model,@ModelAttribute @Validated BookAddForm form, BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			return addBook(model, form);
 		}
+		
+		if(form.getSeriesId() != null) {
+		form.setSeriesName(seriesService.getOneSeries(form.getSeriesId()).getSeriesName());	
+		}
+		
+		log.info(form.toString());
+		model.addAttribute("bookAddForm", form);
+		
+		return "book/add/confirm";
+		
+	}
+	
+	@PostMapping(value="", params="back")
+	public String backToAddBook(Model model, @ModelAttribute BookAddForm form, BindingResult bindingResult) {
+		
+		log.info(form.toString());
+		
+		return addBook(model, form);
+		
+		//return "redirect:/book/add";
+	}
+	
+	@PostMapping(value="", params="confirm")
+	public String addBookToTable(Model model,@ModelAttribute @Validated BookAddForm form, BindingResult bindingResult) {
+		
+		log.info(form.toString());
 		
 		modelMapper.getConfiguration().setAmbiguityIgnored(true);
 		MBook book = modelMapper.map(form, MBook.class);
