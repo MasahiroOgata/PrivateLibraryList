@@ -22,8 +22,11 @@ import com.library.domain.series.model.MSeries;
 import com.library.domain.series.service.SeriesService;
 import com.library.form.BookEditForm;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping("/book/edit")
+@Slf4j
 public class BookEditController {
 	
 	@Autowired
@@ -41,6 +44,8 @@ public class BookEditController {
 	@GetMapping("{id}")
 	public String editBookData(Model model, @ModelAttribute BookEditForm form) {
 		
+		log.info(form.toString());
+		
 		if (form.getUserId() == null) {
 			MBook book = bookService.getOneBook(form.getId());
 			modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -54,11 +59,42 @@ public class BookEditController {
 		model.addAttribute("bookEditForm", form);
 		model.addAttribute("publisherList", publisherList);
 		model.addAttribute("seriesList", seriesList);
+		
+		log.info(form.toString());
 				
 		return "book/edit";
 	}
 	
-	@PostMapping("{id}")
+	@PostMapping("confirm/{id}")
+	public String confirmEditBook(Model model, @ModelAttribute @Validated BookEditForm form, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return editBookData(model,form);
+		}
+		
+		if(form.getSeriesId() != null) {
+			form.setSeriesName(seriesService.getOneSeries(form.getSeriesId()).getSeriesName());
+		}
+		
+		model.addAttribute("BookEditForm", form);
+		
+		MBook book = bookService.getOneBook(form.getId());
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		BookEditForm previousEdition = modelMapper.map(book, BookEditForm.class);
+		form.setPublisherName(book.getPublisher().getPublisherName());
+		
+		model.addAttribute("previousEdition", previousEdition);
+		
+		log.info(form.toString());
+		
+		return "book/edit/confirm";
+	}
+	
+	@PostMapping(value="{id}", params="back")
+	public String backToEditBook(Model model, @ModelAttribute BookEditForm form, BindingResult bindingResult) {
+		return editBookData(model,form);
+	}
+	
+	@PostMapping(value="{id}", params="confirm")
 	public String editBookData(Model model, @ModelAttribute @Validated BookEditForm form, BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {

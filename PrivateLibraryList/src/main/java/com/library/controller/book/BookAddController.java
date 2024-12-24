@@ -68,7 +68,7 @@ public class BookAddController {
 		}
 		
 		if(form.getSeriesId() != null) {
-		form.setSeriesName(seriesService.getOneSeries(form.getSeriesId()).getSeriesName());	
+		    form.setSeriesName(seriesService.getOneSeries(form.getSeriesId()).getSeriesName());	
 		}
 		
 		log.info(form.toString());
