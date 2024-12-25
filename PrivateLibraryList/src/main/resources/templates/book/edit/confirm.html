@@ -18,15 +18,27 @@
 			<input type="hidden" th:field="*{userId}">
 			<table class="table table-striped table-bordered table-hover">
 				<tr>
+					<th></th>
+					<th>修正前</th>
+					<th>修正後</th>
+				</tr>
+				<tr>
 					<th>タイトル</th>
-					<td colspan="2">
-						<th:block th:if="*{bookTitle} != ${previousEdition.bookTitle}">
-							<span class="text-light" th:text="${previousEdition.bookTitle}"></span>
-							<span class="text-primary">-></span>
-						</th:block>
-						<span class="text-primary" th:text="*{bookTitle}"></span>
-						<input type="hidden" th:field="*{bookTitle}">
-					</td>
+					<th:block th:if="*{bookTitle} != ${previousEdition.bookTitle}">
+						<td>
+							<span class="fw-lighter" th:text="${previousEdition.bookTitle}"></span>							
+						</td>
+						<td>	
+							<span class="text-primary fw-bold" th:text="*{bookTitle}"></span>
+							<input type="hidden" th:field="*{bookTitle}">							
+						</td>
+					</th:block>
+					<th:block th:if="*{bookTitle} == ${previousEdition.bookTitle}">
+						<td  colspan="2">
+							<span class="text-center text-primary fw-bold" th:text="*{bookTitle}"></span>
+							<input type="hidden" th:field="*{bookTitle}">	
+						</td>
+					</th:block>
 				</tr>
 				<tr>
 					<th>著者</th>
