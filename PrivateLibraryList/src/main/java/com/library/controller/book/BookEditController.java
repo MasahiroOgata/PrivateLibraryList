@@ -70,21 +70,28 @@ public class BookEditController {
 		if (bindingResult.hasErrors()) {
 			return editBookData(model,form);
 		}
+		log.info(form.toString());
 		
 		if(form.getSeriesId() != null) {
 			form.setSeriesName(seriesService.getOneSeries(form.getSeriesId()).getSeriesName());
 		}
+		
+		log.info(form.toString());
 		
 		model.addAttribute("BookEditForm", form);
 		
 		MBook book = bookService.getOneBook(form.getId());
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		BookEditForm previousEdition = modelMapper.map(book, BookEditForm.class);
-		form.setPublisherName(book.getPublisher().getPublisherName());
+		previousEdition.setPublisherName(book.getPublisher().getPublisherName());
+		if (book.getSeries() != null) {
+			previousEdition.setSeriesName(book.getSeries().getSeriesName());
+		}
+		log.info(previousEdition.toString());
 		
 		model.addAttribute("previousEdition", previousEdition);
 		
-		log.info(form.toString());
+		
 		
 		return "book/edit/confirm";
 	}

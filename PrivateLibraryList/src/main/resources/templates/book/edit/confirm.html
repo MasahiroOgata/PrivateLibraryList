@@ -18,76 +18,165 @@
 			<input type="hidden" th:field="*{userId}">
 			<table class="table table-striped table-bordered table-hover">
 				<tr>
-					<th></th>
-					<th>修正前</th>
-					<th>修正後</th>
+					<th ></th>
+					<th class="text-center">修正前</th>
+					<th class="text-center">修正後</th>
 				</tr>
 				<tr>
 					<th>タイトル</th>
 					<th:block th:if="*{bookTitle} != ${previousEdition.bookTitle}">
-						<td>
+						<td class="text-center">
 							<span class="fw-lighter" th:text="${previousEdition.bookTitle}"></span>							
 						</td>
-						<td>	
+						<td class="text-center">	
 							<span class="text-primary fw-bold" th:text="*{bookTitle}"></span>
 							<input type="hidden" th:field="*{bookTitle}">							
 						</td>
 					</th:block>
 					<th:block th:if="*{bookTitle} == ${previousEdition.bookTitle}">
-						<td  colspan="2">
-							<span class="text-center text-primary fw-bold" th:text="*{bookTitle}"></span>
+						<td></td>
+						<td class="text-center">
+							<span class="align-middle " th:text="*{bookTitle}"></span>
 							<input type="hidden" th:field="*{bookTitle}">	
 						</td>
 					</th:block>
 				</tr>
 				<tr>
 					<th>著者</th>
-					<td  colspan="2">
-						<span th:text="*{author}"></span>
-						<input type="hidden" th:field="*{author}">
-					</td>
+					<th:block th:if="*{author} != ${previousEdition.author}">
+						<td class="text-center">
+							<span class="fw-lighter" th:text="${previousEdition.author}"></span>							
+						</td>
+						<td class="text-center">	
+							<span class="text-primary fw-bold" th:text="*{author}"></span>
+							<input type="hidden" th:field="*{author}">							
+						</td>
+					</th:block>
+					<th:block th:if="*{author} == ${previousEdition.author}">
+						<td></td>
+						<td class="text-center">
+							<span class="align-middle " th:text="*{author}"></span>
+							<input type="hidden" th:field="*{author}">	
+						</td>
+					</th:block>
 				</tr>
 				<tr>
-					<th>シリーズ</th>
-					<td>
-						<span th:if="*{seriesId != null}"
-							 th:text="*{seriesName}">
-						</span>
-						<input type="hidden" th:field="*{seriesId}">
-						<input type="hidden" th:field="*{seriesName}">
-					</td>
-					<td>
-						<span th:if="*{seriesId != null}"
-							 th:text="*{volNum}">
-						</span>
-						<input type="hidden" th:field="*{volNum}">
-					</td>
+					<th>シリーズ</th>					
+					<th:block th:if="*{seriesId} != ${previousEdition.seriesId}">
+						<td class="text-center">
+							<span class="fw-lighter"  th:text="${previousEdition.seriesId != null}? ${previousEdition.seriesName} : 'なし'"></span>							
+						</td>
+						<td class="text-center">	
+							<span class="text-primary fw-bold" th:text="*{seriesId != null}? *{seriesName} : 'なし'"></span>
+							<input type="hidden" th:field="*{seriesId}">
+							<input type="hidden" th:field="*{seriesName}">							
+						</td>
+					</th:block>
+					<th:block th:if="*{seriesId} == ${previousEdition.seriesId}">
+						<td></td>
+						<td class="text-center">
+							<span class="align-middle " th:text="*{seriesId != null}? *{seriesName} : 'なし'"></span>
+							<input type="hidden" th:field="*{seriesId}">
+							<input type="hidden" th:field="*{seriesName}">		
+						</td>
+					</th:block>
+				</tr>
+				<tr>
+					<th>巻数</th>
+					<th:block th:if="*{volNum} != ${previousEdition.volNum}">
+						<td class="text-center">
+							<span class="fw-lighter" th:if="${previousEdition.seriesId != null}" th:text="${previousEdition.volNum}"></span>							
+						</td>
+						<td class="text-center">	
+							<span class="text-primary fw-bold" th:if="*{seriesId != null}" th:text="*{volNum}"></span>
+							<input type="hidden" th:field="*{volNum}">							
+						</td>
+					</th:block>
+					<th:block th:if="*{volNum} == ${previousEdition.volNum}">
+						<td></td>
+						<td  class="text-center">
+							<span class="align-middle " th:if="*{seriesId != null}" th:text="*{volNum}"></span>
+							<input type="hidden" th:field="*{volNum}">	
+						</td>
+					</th:block>	
 				</tr>
 				<tr>
 					<th>出版社</th>
-					<td>
-						<span th:text="*{publisherName}"></span>
-						<input type="hidden" th:field="*{publisherName}">
-					</td>					
-					<td>
-						<span th:text="*{media == 0}? '紙書籍' : '電子書籍'"></span>
-						<input type="hidden" th:field="*{media}">
-					</td>
-					
+					<th:block th:if="*{publisherName} != ${previousEdition.publisherName}">
+						<td class="text-center">
+							<span class="fw-lighter" th:text="${previousEdition.publisherName}"></span>							
+						</td>
+						<td class="text-center">	
+							<span class="text-primary fw-bold" th:text="*{publisherName}"></span>							
+							<input type="hidden" th:field="*{publisherName}">							
+						</td>
+					</th:block>
+					<th:block th:if="*{publisherName} == ${previousEdition.publisherName}">
+						<td></td>
+						<td class="text-center">
+							<span class="align-middle " th:text="*{publisherName}"></span>
+							<input type="hidden" th:field="*{publisherName}">		
+						</td>
+					</th:block>					
+				</tr>	
+				<tr>
+					<th>媒体</th>
+					<th:block th:if="*{media} != ${previousEdition.media}">
+						<td class="text-center">
+							<span class="fw-lighter" th:text="${previousEdition.media == 0}? '紙書籍' : '電子書籍'"></span>
+						</td>
+						<td class="text-center">	
+							<span class="text-primary fw-bold" th:text="*{media == 0}? '紙書籍' : '電子書籍'"></span>
+							<input type="hidden" th:field="*{media}">							
+						</td>
+					</th:block>
+					<th:block th:if="*{media} == ${previousEdition.media}">
+						<td></td>
+						<td  class="text-center">
+							<span class="align-middle" th:text="*{media == 0}? '紙書籍' : '電子書籍'"></span>
+							<input type="hidden" th:field="*{media}">	
+						</td>
+					</th:block>
 				</tr>
 					<tr>
 					<th>購入日</th>
-					<td colspan="2">
-						<span th:text="${#dates.format(bookEditForm.purchasedDate,'YYYY/MM/dd')}"></span>
-						<input type="hidden" th:field="*{purchasedDate}">
-					</td>
+					<th:block th:if="*{purchasedDate} != ${previousEdition.purchasedDate}">
+						<td class="text-center">
+							<span class="fw-lighter"  th:text="${#dates.format(previousEdition.purchasedDate,'YYYY/MM/dd')}"></span>							
+						</td>
+						<td class="text-center">	
+							<span class="text-primary fw-bold" th:text="${#dates.format(bookEditForm.purchasedDate,'YYYY/MM/dd')}"></span>
+							<input type="hidden" th:field="*{purchasedDate}">											
+						</td>
+					</th:block>
+					<th:block th:if="*{purchasedDate} == ${previousEdition.purchasedDate}">
+						<td></td>
+						<td   class="text-center">
+							<span class="align-middle " th:text="${#dates.format(bookEditForm.purchasedDate,'YYYY/MM/dd')}"></span>
+							<input type="hidden" th:field="*{purchasedDate}">	
+						</td>
+					</th:block>
+					
 				</tr>
 				<tr>
 					<th>読了日</th>
-					<td colspan="2">
-						<span  th:text="${bookEditForm.finishedDate == null}? '未' : ${#dates.format(bookEditForm.finishedDate,'YYYY/MM/dd')}"></span>
-						<input type="hidden" th:field="*{finishedDate}">
-					</td>
+					<th:block th:if="*{finishedDate} != ${previousEdition.finishedDate}">
+						<td class="text-center">
+							<span class="fw-lighter"  th:text="${previousEdition.finishedDate != null}?  ${#dates.format(previousEdition.finishedDate,'YYYY/MM/dd')} : '未'"></span>							
+						</td>
+						<td class="text-center">	
+							<span class="text-primary fw-bold" th:text="*{finishedDate != null}?${#dates.format(bookEditForm.finishedDate,'YYYY/MM/dd')} : '未'"></span>
+							<input type="hidden" th:field="*{finishedDate}">											
+						</td>
+					</th:block>
+					<th:block th:if="*{finishedDate} == ${previousEdition.finishedDate}">
+						<td></td>
+						<td  class="text-center">
+							<span class="align-middle " th:text="*{finishedDate != null}?${#dates.format(bookEditForm.finishedDate,'YYYY/MM/dd')} : '未'"></span>
+							<input type="hidden" th:field="*{finishedDate}">	
+						</td>
+					</th:block>
+					
 				</tr>
 				
 			</table>
