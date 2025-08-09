@@ -1,5 +1,27 @@
 @charset "UTF-8";
 
+#book-list {
+	width: 100%;
+}
+
 .disposed .data {
 	text-decoration-line: line-through;
+}
+
+@media (max-width: 992px) {
+    .hide-on-md {
+        /**
+    visibility: hidden;
+    **/
+    display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .hide-on-sm {
+        /**
+    visibility: hidden;
+    **/
+    display: none;
+    }
 }

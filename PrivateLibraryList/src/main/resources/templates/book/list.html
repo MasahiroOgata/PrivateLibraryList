@@ -10,8 +10,9 @@
 
 <link href="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.1.8/datatables.min.css" rel="stylesheet">
 <script src="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.1.8/datatables.min.js"></script>
-
+<!--
 <script>
+
 	jQuery(function($) {
 		 $.extend( $.fn.dataTable.defaults, { 
 			language: {
@@ -22,59 +23,59 @@
     	$('#bookList').DataTable();
 	} );
 </script>
+-->
 </head>
 <body>
 	<div layout:fragment="content">
 		
 		<div class="header border-bottom mx-1">
-			<div class="d-flex justify-content-between">
-				<div class="d-inline-flex">
+			<div class="d-flex justify-content-between row">
+				<div class="d-inline-flex col-md-auto">
 					<h1 class="h3">蔵書一覧</h1>
-					<a class="btn btn-primary mx-3" th:href="@{/book/add}">書籍新規登録</a>
+					<a class="btn btn-primary mx-3 mb-1" th:href="@{/book/add}">書籍新規登録</a>
 				</div>
-				<div class="d-inline-flex">					
+				<div class="d-inline-flex col-md-auto">					
 					<div class="form-check form-switch m-2">
 						 <input class="form-check-input" type="checkbox" role="switch" id="showDisposedBooks"
 						 data-bs-toggle="collapse" th:href="@{#disposedBook}" aria-expanded="false">
 						 <label class="form-check-label" for="showDisposedBooks">処分済み書籍を含む</label>
 					</div>
 					<form method="get" th:action="@{/book/list}" class="row g-2">
-						<div class="form-group col-auto">
+						<div class="form-group col">
 							<input type="text" class="form-control" name="search" th:value="${search}">
 						</div>
-						<div class="col-auto">
+						<div class="col">
 							<button type="submit" class="btn btn-primary mx-3">検索</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
+		
+		<div class="d-none d-sm-block">
 
 		<table id="bookList" class="table table-bordered table-striped table-hover">
 			<thead class="table-light">
 				<tr>
 					<th scope="col">タイトル</th>
 					<th scope="col">著者</th>
-					<th scope="col">シリーズ</th>
-					<th scope="col">出版社</th>
-					<th scope="col">購入日</th>
-					<th scope="col">読了日</th>
+					<th scope="col" class="hide-on-md">シリーズ</th>
+					<th scope="col" class="hide-on-md">出版社</th>
+					<th scope="col" class="hide-on-sm">購入日</th>
+					<th scope="col" class="hide-on-sm">読了日</th>
 					<th scope="col">操作</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="item: ${bookList}" th:classappend="${item.isDisposed == 1}? 'collapse disposed'"
 					th:id="${item.isDisposed == 1}? 'disposedBook'">
-					<td class="data" scope="row" th:text="${item.bookTitle}"></td>
+					<td class="data" th:text="${item.bookTitle}"></td>
 					<td class="data" th:text="${item.author}"></td>
-					<td class="data">
-						<span th:if="${item.seriesId != null}"
-						 th:text="${item.series.seriesName}">
-						</span>
-					</td>
-					<td class="data" th:text="${item.publisher.publisherName}"></td>
-					<td class="data" th:text="${#dates.format(item.purchasedDate,'YYYY/MM/dd')}"></td>
-					<td class="data" th:text="${item.finishedDate == null}? '未' : ${#dates.format(item.finishedDate,'YYYY/MM/dd')}"></td>
+					<td class="data hide-on-md" 
+						th:text="${item.seriesId != null} ? ${item.series.seriesName} : ''"></td>
+					<td class="data hide-on-md" th:text="${item.publisher.publisherName}"></td>
+					<td class="data hide-on-sm" th:text="${#dates.format(item.purchasedDate,'YYYY/MM/dd')}"></td>
+					<td class="data hide-on-sm" th:text="${item.finishedDate == null}? '未' : ${#dates.format(item.finishedDate,'YYYY/MM/dd')}"></td>
 					<td class="text-center">
 						<th:block th:if="${item.finishedDate == null}">
 							<a class="btn btn-sm btn-primary" th:href="@{'/book/finish/' + ${item.id}}">読了</a>
@@ -87,6 +88,33 @@
 				</tr>
 			</tbody>
 		</table>
+		
+		</div>
+		
+		<div class="d-block d-sm-none">
+				<table id="bookListSmall" class="table table-bordered table-striped table-hover">
+				<tbody>
+					<tr th:each="item: ${bookList}" th:classappend="${item.isDisposed == 1}? 'collapse disposed'"
+						th:id="${item.isDisposed == 1}? 'disposedBook'">
+						<td class="data" style="max-width: 170px;">
+							<span class="fw-bold text-truncate d-inline-block" th:text="${item.bookTitle}" style="max-width: 170px;"></span><br>
+							<span class="text-truncate d-inline-block" th:text="${item.author}" style="max-width: 170px;"></span>
+						</td>					
+						<td class="text-center align-middle">
+							<div class="d-flex justify-content-center align-items-center gap-1">
+								<th:block th:if="${item.finishedDate == null}">
+									<a class="btn btn-sm btn-primary" th:href="@{'/book/finish/' + ${item.id}}">読了する</a>
+								</th:block>
+								<th:block th:if="${item.finishedDate != null}">
+									<a class="btn btn-sm btn-secondary" th:href="@{'/book/finish/' + ${item.id}}">未読にする</a>
+								</th:block>
+								<a class="btn btn-sm btn-info" th:href="@{'/book/detail/' + ${item.id}}">詳細</a>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		
 	
 	</div>
