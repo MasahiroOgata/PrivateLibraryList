@@ -5,28 +5,68 @@
 <head>
 </head>
 <body>
+	<!--
 	<nav layout:fragment="header"
 		class="navbar navbar-fixed-top navbar-dark bg-primary navbar-expand-md">
 		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" th:href="@{/book/list}">蔵書一覧</a>
-				<a class="navbar-brand" th:href="@{/series/list}">シリーズ一覧</a>
-				<a class="navbar-brand" th:href="@{/publisher/list}">出版社一覧</a>
-			</div>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-			data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
-			aria-expanded="false" aria-label="Toggle navigation">
-		      <span class="navbar-toggler-icon"></span>
-		    </button>
-			<div class="collapse navbar-collapse justify-content-end"  id="navbarSupportedContent">
+			<div class="navbar-header d-flex">
+				<a class="navbar-brand" th:href="@{/book/list}">蔵書一覧</a>			
+				<div class="collapse navbar-collapse" id="navbarLinkContent">					
+					<a class="navbar-brand nav-link" th:href="@{/series/list}">シリーズ一覧</a>
+					<a class="navbar-brand nav-link" th:href="@{/publisher/list}">出版社一覧</a>					
+					<form class="d-flex" method="post" th:action="@{/logout}">
+						<button class="btn btn-link navbar-brand nav-link" type="submit">
+							ログアウト
+						</button>
+					</form>							
+				</div>
 				<span class="navbar-brand" th:text="|${#authentication.principal.nickname}さん|"></span>
-				<form method="post" th:action="@{/logout}">
-					<button class="btn btn-link navbar-brand" type="submit">
-						ログアウト
-					</button>
-				</form>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+				data-bs-target="#navbarLinkContent" aria-controls="navbarLinkContent" 
+				aria-expanded="false" aria-label="Toggle navigation">
+			      <span class="navbar-toggler-icon"></span>
+			    </button>					
 			</div>
 		</div>
 	</nav>
+	-->
+	
+	<nav layout:fragment="header"
+	     class="navbar navbar-expand-md navbar-dark bg-primary fixed-top" style="position: relative;">
+	  <div class="container-fluid">
+	    
+	    <!-- 左側：ブランド -->
+	    <a class="navbar-brand" th:href="@{/book/list}">蔵書一覧</a>
+	
+	    <!-- 中央：折りたたみ可能なナビメニュー -->
+	    <div class="collapse navbar-collapse" id="navbarLinkContent">
+	      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+	        <li class="nav-item">
+	          <a class="nav-link navbar-brand" th:href="@{/series/list}">シリーズ一覧</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link navbar-brand" th:href="@{/publisher/list}">出版社一覧</a>
+	        </li>
+	        <li class="nav-item">
+	          <form method="post" th:action="@{/logout}">
+	            <button class="btn btn-link nav-link navbar-brand" type="submit">ログアウト</button>
+	          </form>
+	        </li>
+	      </ul>	    
+	     </div>
+	
+	    <!-- 右上固定：ユーザー名＋ハンバーガー -->
+	    <div class="position-absolute top-0 end-0 d-flex align-items-start pt-2 pe-3" style="height: 100%;">
+	      <span class="navbar-text text-white me-2" th:text="|${#authentication.principal.nickname}さん|"></span>
+	      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+	              data-bs-target="#navbarLinkContent" aria-controls="navbarLinkContent"
+	              aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="navbar-toggler-icon"></span>
+	      </button>
+	    </div>
+	
+	  </div>
+	</nav>
+
 </body>
 </html>
