@@ -5,6 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>シリーズ一覧</title>
+<script>
+function junpToSeriesDetail(id) {
+	console.log("junp!");
+	this.jsEvent.stopPropagation();
+}
+</script>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -18,19 +24,24 @@
 		<table class="table table-bordered table-striped table-hover">
 			<thead class="table-light">
 				<tr>
-					<th scope="col" style="width: 35%;">タイトル</th>
-					<th scope="col" style="width: 30%;">著者</th>
-					<th scope="col" style="width: 5%;">巻数</th>
-					<th scope="col" style="width: 10%;">出版社</th>
-					<th scope="col" style="width: 10%;">購入日</th>
-					<th scope="col" style="width: 10%;">読了日</th>
+					<th scope="col" style="width: 33%;" class="d-none d-sm-table-cell">タイトル</th>
+					<th scope="col" style="width: 30%;" class="d-none d-sm-table-cell">著者</th>
+					<th scope="col" class="d-none"></th>
+					<th scope="col" style="width: 7%;" class="d-none d-sm-table-cell">巻数</th>
+					<th scope="col" style="width: 10%;"class="d-none d-md-table-cell" >出版社</th>
+					<!--
+					<th scope="col" style="width: 10%;" class="d-none d-lg-table-cell">購入日</th>
+					<th scope="col" style="width: 10%;" class="d-none d-lg-table-cell">読了日</th>
+					-->
+					<th scope="col" style="width: 10%;" class="d-none d-md-table-cell">購入日</th>
+					<th scope="col" style="width: 10%;" class="d-none d-sm-table-cell">読了日</th>
 				</tr>
 			</thead>
 			<tbody th:each="series: ${seriesList}">
 				<tr class="table-info">
-					<td scope="row" colspan="6" >
+					<td scope="row" colspan="9" >
 						<div class="d-flex justify-content-between">
-							<p class="col-11 m-0 clickable" data-bs-toggle="collapse"
+							<p class="col mb-0 clickable" data-bs-toggle="collapse"
 							 th:href="@{'#' + ${series.id}}" role="button" aria-expanded="false"
 							 th:attr="aria-controls=${series.id}" th:text="|${series.seriesName}（${series.seriesBooks.size()}冊）|"></p>
 							<a class="text-center btn btn-primary btn-sm" th:href="@{'/series/detail/' + ${series.id}}">詳細</a>
@@ -39,12 +50,38 @@
 				</tr>
 				<tr scope="row" th:each="book: ${series.seriesBooks}" class="collapse hyde" th:attr="id=${series.id}"
 				 	th:classappend="${book.isDisposed == 1}? text-decoration-line-through">
-					<td scope="row" th:text="${book.bookTitle}"></td>
-					<td th:text="${book.author}"></td>
-					<td th:text="${book.volNum}"></td>
-					<td th:text="${book.publisher.publisherName}"></td>
-					<td th:text="${#dates.format(book.purchasedDate,'YYYY/MM/dd')}"></td>
-					<td th:text="${book.finishedDate == null}? '未' : ${#dates.format(book.finishedDate,'YYYY/MM/dd')}"></td>
+					<td scope="row" th:text="${book.bookTitle}" class="d-none d-sm-table-cell"></td>
+					<td th:text="${book.author}" class="d-none d-sm-table-cell"></td>
+					<!--
+					<th class="d-sm-none">
+						<div class="row d-flex justify-content-between">
+							<span class="fw-bold text-truncate d-inline-block col" th:text="${book.bookTitle}"></span>
+							<th:block th:if="${book.finishedDate == null}">
+								<span class="text-end text-danger col-auto">未読</span>
+							</th:block>
+						</div>
+						<span class="fw-normal text-truncate d-inline-block" th:text="${book.author}"></span>
+					</th>
+					-->
+					<td class="d-sm-none">
+						<div class="row d-flex justify-content-between">
+							<div class="col-auto">
+								<span class="fw-bold text-truncate d-inline-block my-0" th:text="${book.bookTitle}"></span><br>
+								<span class="fw-normal text-truncate d-inline-block my-0" th:text="${book.author}"></span>
+							</div>
+							<div class="col-auto  d-flex align-items-center">
+								<th:block th:if="${book.finishedDate == null}">
+									<span class="text-danger">未読</span>
+								</th:block>
+							</div>
+						</div>
+					</td>
+					<td th:text="${book.volNum}" class="align-middle"></td>
+					<td th:text="${book.publisher.publisherName}" class="d-none d-md-table-cell"></td>
+					<td th:text="${#dates.format(book.purchasedDate,'YYYY/MM/dd')}" class="d-none d-lg-table-cell"></td>
+					<td th:text="${book.finishedDate == null}? '未' : ${#dates.format(book.finishedDate,'YYYY/MM/dd')}"class="d-none d-lg-table-cell"></td>
+					<td th:text="${#dates.format(book.purchasedDate,'MM/dd')}" class="d-none d-md-table-cell d-lg-none"></td>
+					<td th:text="${book.finishedDate == null}? '未' : ${#dates.format(book.finishedDate,'MM/dd')}"class="d-none d-sm-table-cell d-lg-none"></td>
 				</tr>
 			</tbody>
 		</table>
