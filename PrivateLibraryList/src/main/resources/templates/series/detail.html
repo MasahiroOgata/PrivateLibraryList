@@ -15,6 +15,12 @@ function enableEdit() {
 		document.getElementById('edit').disabled = false;
 	}
 }
+
+window.onload = function() {
+	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+}
+
 </script>
 </head>
 <body>
@@ -23,7 +29,9 @@ function enableEdit() {
 			<div class="d-flex row justify-content-start">
 				<div class="d-flex col-auto d-inline">
 					<h1 class="h3">シリーズ詳細</h1>
-					<a class="btn btn-primary mx-3" th:href="@{'/series/add/' + ${series.id}}">シリーズ書籍新規登録</a>
+					<a class="btn btn-primary mx-3 d-none d-md-block" th:href="@{'/series/add/' + ${series.id}}">シリーズ書籍新規登録</a>
+					<a class="btn btn-primary mx-3 d-md-none" th:href="@{'/series/add/' + ${series.id}}">書籍登録</a>
+					<a class="btn btn-secondary" th:href="@{/series/list}" style="height: 38px;">戻る</a>
 				</div>
 				<h1 class="h5 my-1 col-md" th:text="${series.seriesName}" id="formerName"></h1>
 			</div>
@@ -32,14 +40,22 @@ function enableEdit() {
 			<form method="post"  th:object="${seriesForm}" th:action="@{'/series/detail/' + *{id}}" >
 				<input type="hidden" th:field="*{userId}">
 				<div class="row">
-					<div class="col-7 col-sm-auto mb-1">
+					<div class="col-7 col-md-auto mb-1">
 						<input type="text" class="form-control" th:field="*{seriesName}" oninput="enableEdit()" th:errorclass="is-invalid">
 						<div class="invalid-feedback" th:errors="*{seriesName}"></div>
 					</div>
-					<div class="col-5 col-sm-auto mb-1">
-						<button type="submit" class="btn btn-primary mx-1" style="height: 38px;" name="edit" id="edit" disabled>修正</button>
-						<a class="btn btn-secondary" th:href="@{/series/list}" style="height: 38px;">戻る</a>
+					<div class="col-auto mb-1">
+						<button type="submit" class="btn btn-primary mx-1" name="edit" id="edit" disabled>修正</button>
+						<th:block th:if="${seriesBookList.size() == 0}">
+							<button type="submit" class="btn btn-danger" name="delete">削除</button>
+						</th:block>	
+						<th:block th:if="${seriesBookList.size() gt 0}">
+							<span class="m-0 p-0" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="書籍があるため削除できません">
+								<a class="btn btn-danger mx-0 disabled">削除</a>
+							</span>
+						</th:block>	
 					</div>
+					<!--
 					<div class="col-sm-auto mb-1">
 						<th:block th:if="${seriesBookList.size() == 0}">
 							<button type="submit" class="btn btn-danger mx-1" name="delete">削除</button>
@@ -51,6 +67,7 @@ function enableEdit() {
 							</div>
 						</th:block>	
 					</div>
+					-->
 				</div>
 			</form>	
 		</div>
@@ -81,8 +98,10 @@ function enableEdit() {
 					<td class="d-sm-none">
 						<div class="row d-flex justify-content-between">
 							<div class="col-auto">
-								<span class="fw-bold text-truncate d-inline-block my-0" th:text="${item.bookTitle}"></span><br>
-								<span class="fw-normal text-truncate d-inline-block my-0" th:text="${item.author}"></span>
+								<span class="fw-bold text-truncate d-inline-block my-0" th:text="${item.bookTitle}"
+								th:classappend="${item.isDisposed == 1}? text-decoration-line-through" style="max-width: 170px;"></span><br>
+								<span class="fw-normal text-truncate d-inline-block my-0" th:text="${item.author}"
+								th:classappend="${item.isDisposed == 1}? text-decoration-line-through" style="max-width: 170px;"></span>
 							</div>
 							<div class="col-auto  d-flex align-items-center">
 								<th:block th:if="${item.finishedDate == null}">

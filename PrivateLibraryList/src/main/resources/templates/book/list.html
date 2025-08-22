@@ -34,11 +34,11 @@
 					<h1 class="h3">蔵書一覧</h1>
 					<a class="btn btn-primary mx-3 mb-1" th:href="@{/book/add}">書籍新規登録</a>
 				</div>
-				<div class="d-inline-flex col-md-auto row justify-content-sm-start">					
+				<div class="d-inline-flex col-md-auto row justify-content-sm-start">
 					<div class="form-check form-switch m-1 col-sm-auto">
 						 <input class="form-check-input" type="checkbox" role="switch" id="showDisposedBooks"
 						 data-bs-toggle="collapse" th:href="@{#disposedBook}" aria-expanded="false">
-						 <label class="form-check-label" for="showDisposedBooks">処分済み書籍を含む</label>
+						 <label class="form-check-label" for="showDisposedBooks">処分済み書籍を表示</label>
 					</div>
 					<form method="get" th:action="@{/book/list}" class="row col-sm-auto">
 						<div class="form-group col">
@@ -84,8 +84,31 @@
 					<td class="data d-none d-lg-table-cell" th:text="${item.publisher.publisherName}"></td>
 					<td class="data d-none d-lg-table-cell" th:text="${#dates.format(item.purchasedDate,'YYYY/MM/dd')}"></td>
 					<td class="data d-none d-lg-table-cell" th:text="${item.finishedDate == null}? '未' : ${#dates.format(item.finishedDate,'YYYY/MM/dd')}"></td>
+					
+					<!--
 					<td class="d-none d-md-table-cell d-lg-none" th:text="${#dates.format(item.purchasedDate,'MM/dd')}"></td>
 					<td class="d-none d-md-table-cell d-lg-none" th:text="${item.finishedDate == null}? '未' : ${#dates.format(item.finishedDate,'MM/dd')}"></td>
+					-->
+					<td class="d-none d-md-table-cell d-lg-none" th:with="passedYear=${T(java.time.Period).between(						    
+						    item.purchasedDate.toInstant().atZone(T(java.time.ZoneId).systemDefault()).toLocalDate(),
+						    T(java.time.LocalDate).now(),
+						).getYears()}"
+						th:text="${passedYear > 0}? |${passedYear}年前| : ${#dates.format(item.purchasedDate,'MM/dd')}">					
+					</td>
+					<th:block th:if="${item.finishedDate == null}">
+						<td class="d-none d-md-table-cell d-lg-none" th:text="未"></td>
+					</th:block>
+					<th:block th:if="${item.finishedDate != null}">
+						<td class="d-none d-md-table-cell d-lg-none" th:with="passedYear=${T(java.time.Period).between(						    
+						    item.finishedDate.toInstant().atZone(T(java.time.ZoneId).systemDefault()).toLocalDate(),
+						    T(java.time.LocalDate).now(),
+						).getYears()}"
+						th:text="${passedYear > 0}? |${passedYear}年前| : ${#dates.format(item.purchasedDate,'MM/dd')}">					
+						</td>
+					</th:block>
+				
+					
+					
 					<!--
 					<td class="text-center d-none d-sm-table-cell">
 						<th:block th:if="${item.finishedDate == null}">
