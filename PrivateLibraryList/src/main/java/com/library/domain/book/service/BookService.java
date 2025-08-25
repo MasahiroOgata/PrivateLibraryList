@@ -2,13 +2,16 @@ package com.library.domain.book.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.library.domain.book.model.MBook;
 import com.library.domain.publisher.model.MPublisher;
 
 public interface BookService {
 	
 	/** 蔵書リスト取得 */
-	public List<MBook> getBookList(String search);
+	public Page<MBook> getBookList(String search, Pageable pageable);
 	
 	/** 蔵書リスト取得（シリーズ単位） */
 	public List<MBook> getSeriesBookList(int id);

@@ -2,7 +2,11 @@ package com.library.domain.book.service.impl;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -33,13 +37,20 @@ public class BookServiceImpl implements BookService {
 	
 	/** 蔵書リスト取得 */
 	@Override
-	public List<MBook> getBookList(String search) {
-		return mapper.findManyBooks(search, getLoginUserId());
+	public Page<MBook> getBookList(String search, Pageable pageable) {		
+		RowBounds rowBounds = new RowBounds((int)pageable.getOffset(), pageable.getPageSize());
+		List<MBook> bookList = mapper.findManyBooks(search, getLoginUserId(), rowBounds);
+		
+		Long total = mapper.count();
+		
+		return new PageImpl<>(bookList, pageable, total);
+		
+		//return mapper.findManyBooks(search, getLoginUserId());
 	}
 	
 	/** 蔵書リスト取得（シリーズ単位） */
 	@Override
-	public List<MBook> getSeriesBookList(int id) {
+	public List<MBook> getSeriesBookList(int id) {		
 		return mapper.findSeriesBooks(id);
 	}
 	

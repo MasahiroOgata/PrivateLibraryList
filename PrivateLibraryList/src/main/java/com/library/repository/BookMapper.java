@@ -4,14 +4,17 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 import com.library.domain.book.model.MBook;
 
 @Mapper
 public interface BookMapper {
 	
+	public Long count();
+	
 	/** 蔵書リスト取得 */
-	public List<MBook> findManyBooks(@Param("search") String search, int userId);
+	public List<MBook> findManyBooks(@Param("search") String search, int userId, RowBounds rowBounds);
 	
 	/** 蔵書リスト取得（シリーズ単位） */
 	public List<MBook> findSeriesBooks(int id);	

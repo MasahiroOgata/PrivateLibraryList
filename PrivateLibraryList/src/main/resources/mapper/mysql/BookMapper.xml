@@ -34,6 +34,12 @@
 		<result column="publisher_name" property="publisherName" />
 	</resultMap>
 	
+	<select id="count" resultType="Long">
+    	select 
+    		COUNT(*)
+    	from 
+			books
+    </select>
 
 	<!-- 蔵書複数取得 -->
 	<select id="findManyBooks" resultMap="book">
