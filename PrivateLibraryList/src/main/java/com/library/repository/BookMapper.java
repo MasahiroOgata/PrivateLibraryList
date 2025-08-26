@@ -11,7 +11,8 @@ import com.library.domain.book.model.MBook;
 @Mapper
 public interface BookMapper {
 	
-	public Long count();
+	/** 蔵書総数取得 */
+	public Long count(String search, int userId);
 	
 	/** 蔵書リスト取得 */
 	public List<MBook> findManyBooks(@Param("search") String search, int userId, RowBounds rowBounds);

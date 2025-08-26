@@ -132,15 +132,22 @@
 		
 		
 		  <th:block th:fragment="pagination">
-		    <div th:if="${bookList.totalPages > 1}">
-				<!-- <p th:text="${bookList.hasPrevious()? 't':'f'}"></p> -->
+		    <div th:if="${bookList.totalPages gt 1} and ${bookList.number ge 0} and ${bookList.number lt bookList.totalPages}">
+				<!-- <p th:text="${bookList.hasNext()? 't':'f'}"></p> 
+				<p th:text="${bookList.number} + ' ' + ${bookList.totalPages} + ' ' + ${bookList.getTotalElements()}"></p> -->
 		      <nav>
 		        <ul class="pagination justify-content-end" id="myPagination">
 					
 		          <!-- 前へ -->
 		          <li th:if="${bookList.hasPrevious()}" class="page-item">
 		            <a class="page-link"
-		              th:href="@{/book/list(page=${bookList.number})}">
+		              th:href="@{/book/list(page=${bookList.number})}"
+		              th:if="${#strings.isEmpty(search)}">
+		              前へ
+		            </a>
+		            <a class="page-link"
+		              th:href="@{/book/list(search=${search}, page=${bookList.number})}"
+		              th:if="${not #strings.isEmpty(search)}">
 		              前へ
 		            </a>
 		          </li>
@@ -148,15 +155,25 @@
 		          <!-- ページ番号 -->
 		          <th:block th:with="min=${T(java.lang.Math).max(0, bookList.number - 2)},
 		          max=${T(java.lang.Math).min(bookList.totalPages - 1, bookList.number + 2)}">
-		              <th:block th:if="${min > 0}">
-						<li>
+		          
+					  <!-- 最初のページ番号を表示（下記5ページ分に含まれない場合） -->
+		              <th:block th:if="${min gt 0}">
+						<li  class="page-item">
 			              <a class="page-link"
 			                th:href="@{/book/list(page=1)}"
+			                th:if="${#strings.isEmpty(search)}"
+			                th:text="1">
+			                </a>
+			              <a class="page-link"
+			                th:href="@{/book/list(search=${search}, page=1)}"
+			                th:if="${not #strings.isEmpty(search)}"
 			                th:text="1">
 			              </a>
 			            </li> 
 					  </th:block>
-		              <th:block th:if="${min > 1}">
+					  
+					  <!-- ページ番号の省略を表すボタン（クリック不可） -->
+		              <th:block th:if="${min gt 1}">
 						<li class="page-item disabled">
 			              <a class="page-link"
 			                th:text="...">
@@ -164,6 +181,7 @@
 			            </li> 
 					  </th:block>
 					  
+					  <!-- 表示中のページと前後2ページ（最大5ページ）の番号を表示 -->
 			          <th:block	
 			            th:each="i: ${#numbers.sequence(min, max)}"
 			            th:switch="${bookList.number}">
@@ -175,26 +193,41 @@
 			            <li th:case="*" class="page-item">
 			              <a class="page-link"
 			                th:href="@{/book/list(page=${i + 1})}"
+			                th:if="${#strings.isEmpty(search)}"
+			                th:text="${i + 1}">
+			              </a>
+			              <a class="page-link"
+			                th:href="@{/book/list(search=${search}, page=${i + 1})}"
+			                th:if="${not #strings.isEmpty(search)}"
 			                th:text="${i + 1}">
 			              </a>
 			            </li>
 			          </th:block>
-
-		              <th:block th:if="${max < bookList.totalPages - 2}">
+			          
+			          <!-- ページ番号の省略を表すボタン（クリック不可） -->
+		              <th:block th:if="${max lt bookList.totalPages - 2}">
 						<li class="page-item disabled">
 			              <a class="page-link"
 			                th:text="...">
 			              </a>
 			            </li> 
 					  </th:block>
-		              <th:block th:if="${max < bookList.totalPages - 1}">
-						<li>
+					  
+					  <!-- 最後のページ番号を表示（上記5ページ分に含まれない場合） -->
+		              <th:block th:if="${max lt bookList.totalPages - 1}">
+						<li  class="page-item">
 			              <a class="page-link"
 			                th:href="@{/book/list(page=${bookList.totalPages})}"
+			                th:if="${#strings.isEmpty(search)}"
+			                th:text="${bookList.totalPages}">
+			              </a>
+			              <a class="page-link"
+			                th:href="@{/book/list(search=${search}, page=${bookList.totalPages})}"
+			                th:if="${not #strings.isEmpty(search)}"
 			                th:text="${bookList.totalPages}">
 			              </a>
 			            </li> 
-					  </th:block>			          
+					  </th:block>          
 			          
 			          
 			      </th:block>
@@ -202,7 +235,13 @@
 		          <!-- 次へ -->
 		          <li th:if="${bookList.hasNext()}" class="page-item">
 		            <a class="page-link"
-		              th:href="@{/book/list(page=${bookList.number + 2})}">
+		              th:href="@{/book/list(page=${bookList.number + 2})}"
+		              th:if="${#strings.isEmpty(search)}">
+		              次へ
+		            </a>
+		            <a class="page-link"
+		              th:href="@{/book/list(search=${search}, page=${bookList.number + 2})}"
+		              th:if="${not #strings.isEmpty(search)}">
 		              次へ
 		            </a>
 		          </li>

@@ -39,6 +39,20 @@
     		COUNT(*)
     	from 
 			books
+			left join publishers
+			on books.publisher_id = publishers.id
+			left join series
+			on books.series_id = series.id
+		where
+			books.user_id = #{userId}
+			<if test="search != null">
+				and (
+					book_title like concat('%', #{search}, '%')
+					or author like concat('%', #{search}, '%')
+					or series_name like concat('%', #{search}, '%')
+					or publisher_name like concat('%', #{search}, '%')
+				)
+			</if>
     </select>
 
 	<!-- 蔵書複数取得 -->

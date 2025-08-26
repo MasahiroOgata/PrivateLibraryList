@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
 		RowBounds rowBounds = new RowBounds((int)pageable.getOffset(), pageable.getPageSize());
 		List<MBook> bookList = mapper.findManyBooks(search, getLoginUserId(), rowBounds);
 		
-		Long total = mapper.count();
+		Long total = mapper.count(search, getLoginUserId());
 		
 		return new PageImpl<>(bookList, pageable, total);
 		
