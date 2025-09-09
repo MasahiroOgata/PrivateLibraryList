@@ -69,7 +69,7 @@ function junpToSeriesDetail(id) {
 								<span class="fw-bold text-truncate d-inline-block my-0" th:text="${book.bookTitle}"></span><br>
 								<span class="fw-normal text-truncate d-inline-block my-0" th:text="${book.author}"></span>
 							</div>
-							<div class="col-auto  d-flex align-items-center">
+							<div class="col-auto d-flex align-items-center">
 								<th:block th:if="${book.finishedDate == null}">
 									<span class="text-danger">未読</span>
 								</th:block>
