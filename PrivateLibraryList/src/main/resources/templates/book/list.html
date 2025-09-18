@@ -86,7 +86,9 @@
 					
 					<!-- 書籍タイトル・著者名（画面サイズsm以上） -->
 					<td class="data d-none d-sm-table-cell text-truncate" style="max-width: 170px;" th:text="${item.bookTitle}"></td>
-					<td class="data d-none d-sm-table-cell text-truncate" style="max-width: 170px;" th:text="${item.author}"></td>
+					<td class="data d-none d-sm-table-cell text-truncate" style="max-width: 170px;" >
+						<a th:text="${item.author}" th:href="@{'/book/list?search=' + ${item.author}}"></a>
+					</td>
 					
 					<!-- 書籍タイトル・著者名（画面サイズsm未満で同一セル内に表示） -->
 					<td class="data d-sm-none" style="max-width: 170px;">
@@ -141,7 +143,7 @@
 		
 	  <!-- ページネーション -->
 	  <th:block th:fragment="pagination">
-		<p th:text="${bookList.sort}"></p> 
+		<!-- <p th:text="${bookList.sort}"></p> -->
 	    <div id="pagination" class="row justify-content-between mt-2">	 	  
 		  <p class="col-md"
 		  th:text="${bookList.totalElements} + '冊中' 
